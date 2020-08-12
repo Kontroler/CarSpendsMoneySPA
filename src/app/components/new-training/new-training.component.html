@@ -1,0 +1,35 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <input
+        [(ngModel)]="trainingName"
+        [typeahead]="trainings"
+        class="form-control"
+        placeholder="Training name"
+      />
+
+      <input
+        placeholder="Choose date"
+        class="form-control"
+        bsDatepicker
+        [(ngModel)]="trainingDate"
+      />
+
+      <div class="row justify-content-center margin-bottom-8px">
+        <button type="button" class="btn btn-primary" (click)="addExercise()">
+          Add exercise
+        </button>
+      </div>
+      <div *ngFor="let exercise of exercises; let i = index">
+        <app-edit-exercise
+          [exercise]="exercise"
+          (removeExercise)="removeExercise(i)"
+          (removeExerciseSet)="removeExerciseSet(i, $event)"
+        ></app-edit-exercise>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <button class="btn btn-primary" (click)="saveTraining()">Save</button>
+  </div>
+</div>

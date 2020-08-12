@@ -1,23 +1,28 @@
 <div class="container mt-5">
-  <div *ngIf="!registerMode" style="text-align: center;">
-    <h1>Training Logger</h1>
-    <p class="lead">
-      Come on in to view your trainings... All you need to do is sign up!
-    </p>
-    <div class="text-center">
-      <button class="btn btn-primary btn-lg" (click)="registerToggle()">
-        Register
-      </button>
-    </div>
+  <div *ngIf="(authService.$loggedIn | async) === true; else elseBlock">
+    Logged in
   </div>
-
-  <div *ngIf="registerMode" class="container">
-    <div class="row justify-content-center">
-      <div class="col-4">
-        <app-register
-          (cancelRegister)="cancelRegisterMode($event)"
-        ></app-register>
+  <ng-template #elseBlock>
+    <div *ngIf="!registerMode" style="text-align: center;">
+      <h1>Training Logger</h1>
+      <p class="lead">
+        Come on in to view your trainings... All you need to do is sign up!
+      </p>
+      <div class="text-center">
+        <button class="btn btn-primary btn-lg" (click)="registerToggle()">
+          Register
+        </button>
       </div>
     </div>
-  </div>
+
+    <div *ngIf="registerMode" class="container">
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <app-register
+            (cancelRegister)="cancelRegisterMode($event)"
+          ></app-register>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

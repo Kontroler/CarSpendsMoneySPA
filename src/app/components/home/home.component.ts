@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { AuthService } from './../../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   registerMode = false;
 
-  constructor() {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit() {}
 

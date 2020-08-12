@@ -1,0 +1,63 @@
+<div class="modal-header justify-content-center">
+  <h1>Edit set</h1>
+</div>
+<div class="modal-body">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputReps">Reps</label>
+    </div>
+    <input
+      [(ngModel)]="reps"
+      class="form-control"
+      type="number"
+      placeholder="Reps"
+      id="inputReps"
+    />
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputWeight" type="number">
+        Weight
+      </label>
+    </div>
+    <input
+      [(ngModel)]="weight"
+      class="form-control"
+      type="number"
+      placeholder="Weight"
+      id="inputWeight"
+    />
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Units</label>
+    </div>
+    <select
+      class="custom-select"
+      id="inputGroupSelect01"
+      [(ngModel)]="selectedUnit"
+    >
+      <option *ngFor="let unit of units" [ngValue]="unit">
+        {{ unit.code }}
+      </option>
+    </select>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="row justify-content-center">
+    <div class="column">
+      <button type="submit" class="btn btn-primary" (click)="onSaveClicked()">
+        Save
+      </button>
+    </div>
+    <div class="column">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onCloseClicked()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,27 +1,37 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="#">Training Logger</a>
+    <a class="navbar-brand" routerLink="['/home']">Training Logger</a>
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home </a>
-      </li>
-      <li class="nav-item" *ngIf="loggedIn()">
-        <a class="nav-link" href="#">New training</a>
-      </li>
-    </ul>
+    <button
+      class="navbar-toggler mr-auto"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/home']">Home </a>
+        </li>
+        <li class="nav-item" *ngIf="loggedIn()" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/new-training']">New training</a>
+        </li>
+      </ul>
+    </div>
     <div *ngIf="loggedIn()" class="dropdown" dropdown>
       <a class="dropdown-toggle" dropdownToggle>
         Welcome {{ authService.decodedToken?.unique_name | titlecase }}
       </a>
       <div class="dropdown-menu" *dropdownMenu>
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item">
           <i class="fa fa-user"></i>
           Edit profile
         </a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#" (click)="logout()">
+        <a class="dropdown-item" (click)="logout()">
           <i class="fa fa-sign-out"></i>
           Logout
         </a>
