@@ -1,5 +1,3 @@
-import { UnitAdapter } from './_adapters/UnitAdapter';
-import { UnitService } from './_services/unit.service';
 import { EditExerciseSetComponent } from './components/edit-exercise-set/edit-exercise-set.component';
 import { EditExerciseComponent } from './components/edit-exercise/edit-exercise.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
@@ -14,7 +12,7 @@ import { ErrorInterceptorProvider } from './_interceptors/ErrorInterceptor';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthService } from './_services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -65,13 +63,10 @@ const BootstrapModules = [
         allowedDomains: ['localhost:5000'],
         disallowedRoutes: ['localhost:5000/api/auth']
       }
-    })
+    }),
+    ReactiveFormsModule
   ],
-  providers: [
-    AuthService,
-    ErrorInterceptorProvider,
-    AlertifyService
-  ],
+  providers: [AuthService, ErrorInterceptorProvider, AlertifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

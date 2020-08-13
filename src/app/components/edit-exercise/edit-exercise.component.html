@@ -1,49 +1,64 @@
-<div class="row margin-bottom-8px">
-  <div class="col">
-    <input
-      [(ngModel)]="exercise.name"
-      [typeahead]="exercises"
-      class="form-control"
-      placeholder="Exercise name"
-    />
-  </div>
-  <div class="col-auto float-right">
-    <a class="btn btn-primary" (click)="onRemoveExerciseClicked()">
-      <i class="fas fa-trash"></i>
-    </a>
-    <a
-      class="btn btn-primary"
-      (click)="isCollapsed = !isCollapsed"
-      style="margin-left: 2px;"
-    >
-      <div *ngIf="isCollapsed; else elseBlock">
-        <i class="fas fa-chevron-down"></i>
-      </div>
-      <ng-template #elseBlock>
-        <i class="fas fa-chevron-up"></i>
-      </ng-template>
-    </a>
-  </div>
-</div>
-<div [collapse]="isCollapsed" [isAnimated]="true">
-  <div class="row" *ngFor="let e of exercise.sets; let i = index">
-    <div class="col margin-bottom-8px">
-      <div class="form-control text-center">
-        {{ e.reps }} x {{ e.weight }} {{ e.unit.code }}
+<form [formGroup]="formGroup">
+  <div class="row margin-bottom-8px">
+    <div class="col" >
+      <input
+        formControlName="exerciseName"
+        [typeahead]="exercises"
+        class="form-control"
+        placeholder="Exercise name"
+        [ngClass]="{
+          'is-invalid':
+            !formGroup.valid && formGroup.controls.exerciseName.errors
+        }"
+      />
+      <div *ngIf="!formGroup.valid" class="invalid-feedback">
+        <div *ngIf="formGroup.hasError('required', 'exerciseName')">
+          Exercise name is required field
+        </div>
       </div>
     </div>
     <div class="col-auto float-right">
-      <a class="btn btn-primary" (click)="onRemoveExerciseSetClicked(i)">
+      <a class="btn btn-primary" (click)="onRemoveExerciseClicked()">
         <i class="fas fa-trash"></i>
       </a>
-      <a class="btn btn-primary" style="margin-left: 2px;" (click)="editSet(e)">
-        <i class="fas fa-edit"></i>
+      <a
+        class="btn btn-primary"
+        (click)="isCollapsed = !isCollapsed"
+        style="margin-left: 2px;"
+      >
+        <div *ngIf="isCollapsed; else elseBlock">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <ng-template #elseBlock>
+          <i class="fas fa-chevron-up"></i>
+        </ng-template>
       </a>
     </div>
   </div>
-  <div class="row margin-bottom-8px justify-content-center">
-    <button type="button" class="btn btn-primary" (click)="addSet()">
-      Add set
-    </button>
+  <div [collapse]="isCollapsed" [isAnimated]="true">
+    <div class="row" *ngFor="let e of exercise.sets; let i = index">
+      <div class="col margin-bottom-8px">
+        <div class="form-control text-center">
+          {{ e.reps }} x {{ e.weight }} {{ e.unit.code }}
+        </div>
+      </div>
+      <div class="col-auto float-right">
+        <a class="btn btn-primary" (click)="onRemoveExerciseSetClicked(i)">
+          <i class="fas fa-trash"></i>
+        </a>
+        <a
+          class="btn btn-primary"
+          style="margin-left: 2px;"
+          (click)="editSet(e)"
+        >
+          <i class="fas fa-edit"></i>
+        </a>
+      </div>
+    </div>
+    <div class="row margin-bottom-8px justify-content-center">
+      <button type="button" class="btn btn-primary" (click)="addSet()">
+        Add set
+      </button>
+    </div>
   </div>
-</div>
+</form>

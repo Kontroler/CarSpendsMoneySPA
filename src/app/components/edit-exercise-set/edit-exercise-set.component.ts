@@ -1,3 +1,4 @@
+import { FormBuilder, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Unit } from './../../_models/Unit';
 import { Observable, config, Subject } from 'rxjs';
@@ -22,18 +23,21 @@ import {
 export class EditExerciseSetComponent implements OnInit {
   exerciseSet: ExerciseSet;
 
-  selectedUnit: Unit;
-  reps = 0;
-  weight = 0;
-
   units: Unit[];
 
   public onClose: Subject<ExerciseSet>;
 
   constructor(
     public bsModalRef: BsModalRef,
-    private unitService: UnitService
+    private unitService: UnitService,
+    private fb: FormBuilder
   ) {}
+
+  formGroup = this.fb.group({
+    selectedUnit: ['', [Validators.required]],
+    reps: ['', [Validators.required]],
+    weight: ['', [Validators.required]]
+  });
 
   ngOnInit() {
     this.loadUnits();
@@ -44,27 +48,29 @@ export class EditExerciseSetComponent implements OnInit {
     this.unitService.getAll().subscribe((units) => {
       this.units = units;
       if (this.exerciseSet) {
-        this.reps = this.exerciseSet.reps;
-        this.weight = this.exerciseSet.weight;
-        this.selectedUnit = this.units.find(
-          (u) => u.code === this.exerciseSet.unit.code
-        );
+        this.formGroup.get('reps').patchValue(this.exerciseSet.reps);
+        this.formGroup.get('weight').patchValue(this.exerciseSet.weight);
+        this.formGroup
+          .get('selectedUnit')
+          .patchValue(
+            this.units.find((u) => u.code === this.exerciseSet.unit.code)
+          );
       } else {
-        this.selectedUnit = this.units[0];
+        this.formGroup.get('selectedUnit').patchValue(this.units[0]);
       }
     });
   }
 
   onSaveClicked() {
     if (this.exerciseSet) {
-      this.exerciseSet.reps = +this.reps;
-      this.exerciseSet.weight = +this.weight;
-      this.exerciseSet.unit.code = this.selectedUnit.code;
+      this.exerciseSet.reps = +this.formGroup.get('reps').value;
+      this.exerciseSet.weight = +this.formGroup.get('weight').value;
+      this.exerciseSet.unit.code = this.formGroup.get('selectedUnit').value.code;
     } else {
       const set = {
-        reps: this.reps,
-        weight: this.weight,
-        unit: this.selectedUnit
+        reps: this.formGroup.get('reps').value,
+        weight: this.formGroup.get('weight').value,
+        unit: this.formGroup.get('selectedUnit').value
       };
       this.onClose.next(set);
     }

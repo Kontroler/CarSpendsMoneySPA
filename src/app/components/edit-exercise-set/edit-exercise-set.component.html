@@ -1,63 +1,90 @@
-<div class="modal-header justify-content-center">
-  <h1>Edit set</h1>
-</div>
-<div class="modal-body">
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <label class="input-group-text" for="inputReps">Reps</label>
-    </div>
-    <input
-      [(ngModel)]="reps"
-      class="form-control"
-      type="number"
-      placeholder="Reps"
-      id="inputReps"
-    />
+<form [formGroup]="formGroup">
+  <div class="modal-header justify-content-center">
+    <h1>Edit set</h1>
   </div>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <label class="input-group-text" for="inputWeight" type="number">
-        Weight
-      </label>
+  <div class="modal-body">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputReps">Reps</label>
+      </div>
+      <input
+        formControlName="reps"
+        class="form-control"
+        type="number"
+        placeholder="Reps"
+        id="inputReps"
+        [ngClass]="{
+          'is-invalid': !formGroup.valid && formGroup.controls.reps.errors
+        }"
+      />
+      <div *ngIf="!formGroup.valid" class="invalid-feedback">
+        <div *ngIf="formGroup.hasError('required', 'reps')">
+          Reps is required field
+        </div>
+      </div>
     </div>
-    <input
-      [(ngModel)]="weight"
-      class="form-control"
-      type="number"
-      placeholder="Weight"
-      id="inputWeight"
-    />
-  </div>
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <label class="input-group-text" for="inputGroupSelect01">Units</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputWeight" type="number">
+          Weight
+        </label>
+      </div>
+      <input
+        formControlName="weight"
+        class="form-control"
+        type="number"
+        placeholder="Weight"
+        id="inputWeight"
+        [ngClass]="{
+          'is-invalid': !formGroup.valid && formGroup.controls.weight.errors
+        }"
+      />
+      <div *ngIf="!formGroup.valid" class="invalid-feedback">
+        <div *ngIf="formGroup.hasError('required', 'weight')">
+          Weight is required field
+        </div>
+      </div>
     </div>
-    <select
-      class="custom-select"
-      id="inputGroupSelect01"
-      [(ngModel)]="selectedUnit"
-    >
-      <option *ngFor="let unit of units" [ngValue]="unit">
-        {{ unit.code }}
-      </option>
-    </select>
-  </div>
-</div>
-<div class="modal-footer">
-  <div class="row justify-content-center">
-    <div class="column">
-      <button type="submit" class="btn btn-primary" (click)="onSaveClicked()">
-        Save
-      </button>
-    </div>
-    <div class="column">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="onCloseClicked()"
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Units</label>
+      </div>
+      <select
+        class="custom-select"
+        id="inputGroupSelect01"
+        formControlName="selectedUnit"
+        [ngClass]="{
+          'is-invalid':
+            !formGroup.valid && formGroup.controls.selectedUnit.errors
+        }"
       >
-        Close
-      </button>
+        <option *ngFor="let unit of units" [ngValue]="unit">
+          {{ unit.code }}
+        </option>
+      </select>
+      <div *ngIf="!formGroup.valid" class="invalid-feedback">
+        <div *ngIf="formGroup.hasError('required', 'selectedUnit')">
+          Unit is required field
+        </div>
+      </div>
     </div>
   </div>
-</div>
+  <div class="modal-footer">
+    <div class="row justify-content-center">
+      <div class="column">
+        <button type="submit" class="btn btn-primary" (click)="onSaveClicked()" [disabled]="!formGroup.valid">
+          Save
+        </button>
+      </div>
+      <div class="column">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onCloseClicked()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,35 +1,65 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-6">
-      <input
-        [(ngModel)]="trainingName"
-        [typeahead]="trainings"
-        class="form-control"
-        placeholder="Training name"
-      />
-
-      <input
-        placeholder="Choose date"
-        class="form-control"
-        bsDatepicker
-        [(ngModel)]="trainingDate"
-      />
-
-      <div class="row justify-content-center margin-bottom-8px">
-        <button type="button" class="btn btn-primary" (click)="addExercise()">
-          Add exercise
-        </button>
-      </div>
-      <div *ngFor="let exercise of exercises; let i = index">
-        <app-edit-exercise
-          [exercise]="exercise"
-          (removeExercise)="removeExercise(i)"
-          (removeExerciseSet)="removeExerciseSet(i, $event)"
-        ></app-edit-exercise>
+<form [formGroup]="formGroup">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <div>
+          <input
+            formControlName="trainingName"
+            [typeahead]="trainings"
+            class="form-control"
+            placeholder="Training name"
+            [ngClass]="{
+              'is-invalid':
+                !formGroup.valid && formGroup.controls.trainingName.errors
+            }"
+          />
+          <div *ngIf="!formGroup.valid" class="invalid-feedback">
+            <div *ngIf="formGroup.hasError('required', 'trainingName')">
+              Training name is required field
+            </div>
+          </div>
+        </div>
+        <div>
+          <input
+            formControlName="trainingDate"
+            placeholder="Choose date"
+            class="form-control"
+            bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+            [ngClass]="{
+              'is-invalid':
+                !formGroup.valid && formGroup.controls.trainingDate.errors
+            }"
+          />
+          <div *ngIf="!formGroup.valid" class="invalid-feedback">
+            <div *ngIf="formGroup.hasError('required', 'trainingDate')">
+              Training date is required field
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center margin-bottom-8px">
+          <button type="button" class="btn btn-primary" (click)="addExercise()">
+            Add exercise
+          </button>
+        </div>
+        <div *ngFor="let exercise of exercises; let i = index">
+          <app-edit-exercise
+            #editExerciseComponent
+            [exercise]="exercise"
+            (removeExercise)="removeExercise(i)"
+            (removeExerciseSet)="removeExerciseSet(i, $event)"
+          ></app-edit-exercise>
+        </div>
       </div>
     </div>
+    <div class="row justify-content-center">
+      <button
+        class="btn btn-primary"
+        (click)="saveTraining()"
+        [disabled]="formGroup.invalid"
+      >
+        Save
+      </button>
+    </div>
   </div>
-  <div class="row justify-content-center">
-    <button class="btn btn-primary" (click)="saveTraining()">Save</button>
-  </div>
-</div>
+</form>
