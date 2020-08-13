@@ -1,9 +1,9 @@
-import { Unit } from './../_models/Unit';
-import { Exercise } from './../_models/Exercise';
+import { Observable } from 'rxjs';
 import { Training } from './../_models/Training';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,17 @@ export class TrainingService {
   baseUrl = environment.apiUrl + 'trainings/';
 
   constructor(private http: HttpClient) {}
+
+  getNames(): Observable<string[]> {
+    return this.http.get<string[]>(this.baseUrl + 'names').pipe(
+      map((items: any[]) =>
+        items.map((item: any) => {
+          console.log(item.name);
+          return item.name;
+        })
+      )
+    );
+  }
 
   save(training: Training) {
     return this.http.post(this.baseUrl, {

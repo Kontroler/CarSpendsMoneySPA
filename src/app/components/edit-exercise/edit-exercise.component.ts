@@ -4,6 +4,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Exercise } from 'src/app/_models/Exercise';
 import { Validators, FormBuilder } from '@angular/forms';
+import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
 
 @Component({
   selector: 'app-edit-exercise',
@@ -24,7 +25,7 @@ export class EditExerciseComponent implements OnInit {
   constructor(private modalService: BsModalService, private fb: FormBuilder) {}
 
   formGroup = this.fb.group({
-    exerciseName: ['', [Validators.required]]
+    exerciseName: ['', [Validators.required, notBlankValidator()]]
   });
 
   ngOnInit() {

@@ -12,6 +12,8 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
 
 @Component({
   selector: 'app-new-training',
@@ -19,7 +21,7 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./new-training.component.css']
 })
 export class NewTrainingComponent implements OnInit, AfterViewInit {
-  trainings: string[] = ['Training 1', 'Training 2'];
+  trainings: Observable<string[]>;
 
   exercises: Exercise[] = [];
 
@@ -34,11 +36,12 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
   ) {}
 
   formGroup = this.fb.group({
-    trainingName: ['', [Validators.required]],
+    trainingName: ['', [Validators.required, notBlankValidator()]],
     trainingDate: ['', [Validators.required]]
   });
 
   ngOnInit() {
+    this.trainings = this.trainingService.getNames();
     this.formGroup.get('trainingDate').setValue(new Date());
   }
 
