@@ -13,10 +13,9 @@ import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
 })
 export class EditExerciseComponent implements OnInit {
   selected = '';
-  exercises: string[] = ['Exercise 1', 'Exercise 2'];
-
   isCollapsed = false;
 
+  @Input() exerciseTypehead: string[];
   @Input() exercise: Exercise;
   @Output() removeExercise = new EventEmitter<boolean>();
   @Output() removeExerciseSet = new EventEmitter<number>();

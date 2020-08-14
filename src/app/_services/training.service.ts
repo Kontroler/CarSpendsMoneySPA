@@ -17,7 +17,6 @@ export class TrainingService {
     return this.http.get<string[]>(this.baseUrl + 'names').pipe(
       map((items: any[]) =>
         items.map((item: any) => {
-          console.log(item.name);
           return item.name;
         })
       )

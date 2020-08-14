@@ -17,5 +17,10 @@ export class AppComponent implements OnInit {
     if (token) {
       this.authService.decodedToken = this.jwtHelper.decodeToken(token);
     }
+    this.authService.$loggedIn.subscribe((x) => {
+      if (!x) {
+        this.authService.logout();
+      }
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { ExerciseService } from './../../_services/exercise.service';
 import { EditExerciseComponent } from './../edit-exercise/edit-exercise.component';
 import { Router } from '@angular/router';
 import { Training } from './../../_models/Training';
@@ -22,6 +23,7 @@ import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
 })
 export class NewTrainingComponent implements OnInit, AfterViewInit {
   trainings: Observable<string[]>;
+  exerciseNamesTypehead: Observable<string[]>;
 
   exercises: Exercise[] = [];
 
@@ -31,6 +33,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
 
   constructor(
     private trainingService: TrainingService,
+    private exerciseService: ExerciseService,
     private router: Router,
     private fb: FormBuilder
   ) {}
@@ -42,6 +45,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.trainings = this.trainingService.getNames();
+    this.exerciseNamesTypehead = this.exerciseService.getNames();
     this.formGroup.get('trainingDate').setValue(new Date());
   }
 

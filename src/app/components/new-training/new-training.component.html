@@ -46,6 +46,7 @@
           <app-edit-exercise
             #editExerciseComponent
             [exercise]="exercise"
+            [exerciseTypehead]="exerciseNamesTypehead | async"
             (removeExercise)="removeExercise(i)"
             (removeExerciseSet)="removeExerciseSet(i, $event)"
           ></app-edit-exercise>
