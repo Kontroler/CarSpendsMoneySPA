@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Training } from './../_models/Training';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -37,6 +37,10 @@ export class TrainingService {
       );
   }
 
+  delete(trainingId: number) {
+    return this.http.delete(this.baseUrl + `delete/${trainingId}`);
+  }
+
   save(training: Training) {
     return this.http.post(this.baseUrl, {
       Name: training.name,
@@ -63,7 +67,6 @@ export class TrainingService {
         Sets: sets
       });
     });
-    console.log(exercises);
     return exercises;
   }
 }

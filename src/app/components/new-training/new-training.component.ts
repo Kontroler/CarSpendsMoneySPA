@@ -1,3 +1,4 @@
+import { AlertifyService } from './../../_services/alertify.service';
 import { ExerciseService } from './../../_services/exercise.service';
 import { EditExerciseComponent } from './../edit-exercise/edit-exercise.component';
 import { Router } from '@angular/router';
@@ -10,10 +11,11 @@ import {
   OnInit,
   QueryList,
   ViewChildren,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
 
 @Component({
@@ -35,7 +37,9 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
     private trainingService: TrainingService,
     private exerciseService: ExerciseService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private alertifyService: AlertifyService,
+    private cd: ChangeDetectorRef
   ) {}
 
   formGroup = this.fb.group({
@@ -51,6 +55,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.addEditExerciseComponentsFormGroup();
+    this.cd.detectChanges();
   }
 
   private addEditExerciseComponentsFormGroup() {
@@ -62,7 +67,9 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
 
   private removeOldEditExerciseComponentsFormGroup() {
     this.editExerciseComponentKeys.forEach((key) => {
-      this.formGroup.removeControl(key);
+      if (this.formGroup.contains(key)) {
+        this.formGroup.removeControl(key);
+      }
     });
     this.editExerciseComponentKeys.length = 0;
   }
@@ -101,11 +108,12 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
     };
     this.trainingService.save(training).subscribe(
       (next) => {
-        console.log('saved');
+        this.alertifyService.success('Saved');
         this.router.navigate(['/home']);
       },
       (error) => {
-        console.error('save error');
+        this.alertifyService.error('Saving error');
+        console.error(error);
       }
     );
   }
