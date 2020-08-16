@@ -1,3 +1,4 @@
+import { TrainingAdapter } from './../_adapters/TrainingAdapter';
 import { Observable } from 'rxjs';
 import { Training } from './../_models/Training';
 import { Injectable } from '@angular/core';
@@ -11,7 +12,10 @@ import { map } from 'rxjs/operators';
 export class TrainingService {
   baseUrl = environment.apiUrl + 'trainings/';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private trainingAdapter: TrainingAdapter
+  ) {}
 
   getNames(): Observable<string[]> {
     return this.http.get<string[]>(this.baseUrl + 'names').pipe(
@@ -21,6 +25,16 @@ export class TrainingService {
         })
       )
     );
+  }
+
+  getAll(): Observable<Training[]> {
+    return this.http
+      .get<Training[]>(this.baseUrl)
+      .pipe(
+        map((items: any[]) =>
+          items.map((item: any) => this.trainingAdapter.adapt(item))
+        )
+      );
   }
 
   save(training: Training) {

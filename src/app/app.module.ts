@@ -1,3 +1,4 @@
+import { TrainingListComponent } from './components/training-list/training-list.component';
 import { EditExerciseSetComponent } from './components/edit-exercise-set/edit-exercise-set.component';
 import { EditExerciseComponent } from './components/edit-exercise/edit-exercise.component';
 import { NewTrainingComponent } from './components/new-training/new-training.component';
@@ -46,7 +47,8 @@ const BootstrapModules = [
     RegisterComponent,
     NewTrainingComponent,
     EditExerciseComponent,
-    EditExerciseSetComponent
+    EditExerciseSetComponent,
+    TrainingListComponent
   ],
   imports: [
     BrowserModule,

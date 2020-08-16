@@ -68,6 +68,7 @@ export class EditExerciseSetComponent implements OnInit {
       this.exerciseSet.unit.code = this.formGroup.get('selectedUnit').value.code;
     } else {
       const set = {
+        id: null,
         reps: this.formGroup.get('reps').value,
         weight: this.formGroup.get('weight').value,
         unit: this.formGroup.get('selectedUnit').value

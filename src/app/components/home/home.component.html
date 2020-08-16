@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <div *ngIf="(authService.$loggedIn | async) === true; else elseBlock">
-    Logged in
+    <app-training-list></app-training-list>
   </div>
   <ng-template #elseBlock>
     <div *ngIf="!registerMode" style="text-align: center;">

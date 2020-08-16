@@ -80,7 +80,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
 
   addExercise() {
     const sets: ExerciseSet[] = [];
-    const exercise: Exercise = { name: '', sets };
+    const exercise: Exercise = { id: null, name: '', sets };
     this.exercises.push(exercise);
   }
 
@@ -94,6 +94,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
 
   saveTraining() {
     const training: Training = {
+      id: null,
       name: this.formGroup.get('trainingName').value,
       date: this.formGroup.get('trainingDate').value,
       exercises: this.exercises
