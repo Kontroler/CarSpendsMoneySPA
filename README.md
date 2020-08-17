@@ -1,6 +1,15 @@
 # TrainingLoggerSpa
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.5.
+App is exercise tracker for gym routine.
+
+## Technologies
+* TypeScript 3.9.7
+* Angular 10.0.8
+* AngularJWT 5.0.1
+* Angular Font Awesome 0.7.0
+* NgxBootstrap 5.6.1
+* RxJS 6.6.2
+* AlertifyJs 1.13.1
 
 ## Development server
 
