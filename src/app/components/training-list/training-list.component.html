@@ -16,7 +16,12 @@
               <a class="btn btn-primary" (click)="deleteTraining(training.id)">
                 <i class="fas fa-trash"></i>
               </a>
-              <a class="btn btn-primary" style="margin-left: 2px;">
+              <a
+                class="btn btn-primary"
+                style="margin-left: 2px;"
+                [routerLink]="['/new-training']"
+                [queryParams]="{ id: training.id }"
+              >
                 <i class="fas fa-edit"></i>
               </a>
             </div>

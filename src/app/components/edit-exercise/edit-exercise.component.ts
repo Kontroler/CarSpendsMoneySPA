@@ -29,6 +29,7 @@ export class EditExerciseComponent implements OnInit {
 
   ngOnInit() {
     this.updateExerciseName();
+    this.formGroup.get('exerciseName').setValue(this.exercise.name);
   }
 
   private updateExerciseName() {

@@ -37,6 +37,12 @@ export class TrainingService {
       );
   }
 
+  getById(id: number): Observable<Training> {
+    return this.http
+      .get<Training>(this.baseUrl + id)
+      .pipe(map((item: any) => this.trainingAdapter.adapt(item)));
+  }
+
   delete(trainingId: number) {
     return this.http.delete(this.baseUrl + `delete/${trainingId}`);
   }

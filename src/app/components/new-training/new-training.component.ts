@@ -1,7 +1,7 @@
 import { AlertifyService } from './../../_services/alertify.service';
 import { ExerciseService } from './../../_services/exercise.service';
 import { EditExerciseComponent } from './../edit-exercise/edit-exercise.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Training } from './../../_models/Training';
 import { TrainingService } from './../../_services/training.service';
 import { ExerciseSet } from './../../_models/ExerciseSet';
@@ -11,12 +11,12 @@ import {
   OnInit,
   QueryList,
   ViewChildren,
-  AfterViewInit,
-  ChangeDetectorRef
+  AfterViewInit
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
+import { first, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-training',
@@ -24,7 +24,9 @@ import { notBlankValidator } from '../../_shared/NotBlankValidator.directive';
   styleUrls: ['./new-training.component.css']
 })
 export class NewTrainingComponent implements OnInit, AfterViewInit {
-  trainings: Observable<string[]>;
+  trainingToEdit: Training;
+
+  trainingNames: Observable<string[]>;
   exerciseNamesTypehead: Observable<string[]>;
 
   exercises: Exercise[] = [];
@@ -39,7 +41,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
     private router: Router,
     private fb: FormBuilder,
     private alertifyService: AlertifyService,
-    private cd: ChangeDetectorRef
+    private route: ActivatedRoute
   ) {}
 
   formGroup = this.fb.group({
@@ -48,14 +50,42 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
   });
 
   ngOnInit() {
-    this.trainings = this.trainingService.getNames();
+    this.trainingNames = this.trainingService.getNames();
     this.exerciseNamesTypehead = this.exerciseService.getNames();
-    this.formGroup.get('trainingDate').setValue(new Date());
+
+    this.route.queryParams
+      .pipe(
+        first((params) => params.id),
+        switchMap((param) => this.trainingService.getById(param.id))
+      )
+      .subscribe(
+        (next) => {
+          if (next) {
+            this.trainingToEdit = next;
+            this.formGroup
+              .get('trainingName')
+              .setValue(this.trainingToEdit.name);
+            this.formGroup
+              .get('trainingDate')
+              .setValue(this.trainingToEdit.date);
+            this.exercises.push.apply(
+              this.exercises,
+              this.trainingToEdit.exercises
+            );
+            console.log(next);
+          } else {
+            this.formGroup.get('trainingDate').setValue(new Date());
+          }
+        },
+        (error) => {
+          this.alertifyService.error('Loading training error');
+          console.error(error);
+        }
+      );
   }
 
   ngAfterViewInit() {
     this.addEditExerciseComponentsFormGroup();
-    this.cd.detectChanges();
   }
 
   private addEditExerciseComponentsFormGroup() {
@@ -107,7 +137,7 @@ export class NewTrainingComponent implements OnInit, AfterViewInit {
       exercises: this.exercises
     };
     this.trainingService.save(training).subscribe(
-      (next) => {
+      () => {
         this.alertifyService.success('Saved');
         this.router.navigate(['/home']);
       },
